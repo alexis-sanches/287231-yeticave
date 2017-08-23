@@ -1,7 +1,7 @@
-# Личный проект «YetiCave» 
+# Личный проект «YetiCave»
 
 * Студент: [Александр Санников](https://up.htmlacademy.ru/php/2/user/287231).
-* Наставник: `Неизвестно`.
+* Наставник: [Кирилл Сенкевич](https://htmlacademy.ru/profile/id295429).
 
 ---
 
