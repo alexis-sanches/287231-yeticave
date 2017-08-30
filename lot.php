@@ -7,6 +7,22 @@ $bets = [
     ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) .' hour')],
     ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
 ];
+
+function getRelativeDate($ts) {
+    $current_time = strtotime('now');
+    $time_left = $current_time - $ts;
+    $hour = 3600;
+    $day = 86400;
+
+    if ($time_left >= $day) {
+        return date("d.m.Y H:i", $ts);
+    } elseif ($time_left >= $hour) {
+        return floor($time_left / 3600) . ' часов назад';
+    } else {
+        return floor($time_left / 60) . ' минут назад';
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -108,14 +124,15 @@ $bets = [
                     </form>
                 </div>
                 <div class="history">
-                    <h3>История ставок (<span>4</span>)</h3>
-                    <!-- заполните эту таблицу данными из массива $bets-->
+                    <h3>История ставок (<span><?=count($bets); ?></span>)</h3>
                     <table class="history__list">
+                        <?php foreach ($bets as $key => $value): ?>
                         <tr class="history__item">
-                            <td class="history__name"><!-- имя автора--></td>
-                            <td class="history__price"><!-- цена--> р</td>
-                            <td class="history__time"><!-- дата в человеческом формате--></td>
+                            <td class="history__name"><?=$value['name'] ?></td>
+                            <td class="history__price"><?=$value['price'] ?> р</td>
+                            <td class="history__time"><?=getRelativeDate($value['ts']) ?></td>
                         </tr>
+                        <?php endforeach; ?>
                     </table>
                 </div>
             </div>
