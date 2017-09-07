@@ -27,7 +27,7 @@
                 </div>
                 <div class="user-menu__logged">
                     <p>
-                        <?=$user_name?>
+                        <?=htmlspecialchars($user_name)?>
                     </p>
                 </div>
             <?php else: ?>
