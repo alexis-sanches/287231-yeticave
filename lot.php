@@ -1,6 +1,23 @@
 <?php
 
-// ставки пользователей, которыми надо заполнить таблицу
+require_once 'lot_list.php';
+
+
+function getLot($arr) {
+    if (isset($_GET['lot'])) {
+        $lotIndex = $_GET['lot'];
+
+        if (!isset($arr[$lotIndex])) {
+            http_response_code(404);
+            header('Location: 404.php');
+        } else {
+            return $arr[$lotIndex];
+        }
+    }
+}
+
+$lot = getLot($goods);
+
 $bets = [
     ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) .' minute')],
     ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) .' hour')],
@@ -38,7 +55,7 @@ function getRelativeDate($ts) {
 <header class="main-header">
     <div class="main-header__container container">
         <h1 class="visually-hidden">YetiCave</h1>
-        <a class="main-header__logo" href="index.html">
+        <a class="main-header__logo" href="index.php">
             <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
         </a>
         <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru">
@@ -83,23 +100,14 @@ function getRelativeDate($ts) {
         </ul>
     </nav>
     <section class="lot-item container">
-        <h2>DC Ply Mens 2016/2017 Snowboard</h2>
+        <h2><?=$lot['title']; ?></h2>
         <div class="lot-item__content">
             <div class="lot-item__left">
                 <div class="lot-item__image">
-                    <img src="img/lot-image.jpg" width="730" height="548" alt="Сноуборд">
+                    <img src="<?=$lot['image_url']; ?>" width="730" height="548" alt="<?=$lot['title']; ?>">
                 </div>
-                <p class="lot-item__category">Категория: <span>Доски и лыжи</span></p>
-                <p class="lot-item__description">Легкий маневренный сноуборд, готовый дать жару в любом парке, растопив
-                    снег
-                    мощным щелчкоми четкими дугами. Стекловолокно Bi-Ax, уложенное в двух направлениях, наделяет этот
-                    снаряд
-                    отличной гибкостью и отзывчивостью, а симметричная геометрия в сочетании с классическим прогибом
-                    кэмбер
-                    позволит уверенно держать высокие скорости. А если к концу катального дня сил совсем не останется,
-                    просто
-                    посмотрите на Вашу доску и улыбнитесь, крутая графика от Шона Кливера еще никого не оставляла
-                    равнодушным.</p>
+                <p class="lot-item__category">Категория: <span><?=$lot['category']; ?></span></p>
+                <p class="lot-item__description"><?=$lot['description']; ?></p>
             </div>
             <div class="lot-item__right">
                 <div class="lot-item__state">
@@ -109,7 +117,7 @@ function getRelativeDate($ts) {
                     <div class="lot-item__cost-state">
                         <div class="lot-item__rate">
                             <span class="lot-item__amount">Текущая цена</span>
-                            <span class="lot-item__cost">11 500</span>
+                            <span class="lot-item__cost"><?=$lot['price']; ?> р.</span>
                         </div>
                         <div class="lot-item__min-cost">
                             Мин. ставка <span>12 000 р</span>
@@ -127,11 +135,11 @@ function getRelativeDate($ts) {
                     <h3>История ставок (<span><?=count($bets); ?></span>)</h3>
                     <table class="history__list">
                         <?php foreach ($bets as $key => $value): ?>
-                        <tr class="history__item">
-                            <td class="history__name"><?=$value['name'] ?></td>
-                            <td class="history__price"><?=$value['price'] ?> р</td>
-                            <td class="history__time"><?=getRelativeDate($value['ts']) ?></td>
-                        </tr>
+                            <tr class="history__item">
+                                <td class="history__name"><?=$value['name'] ?></td>
+                                <td class="history__price"><?=$value['price'] ?> р</td>
+                                <td class="history__time"><?=getRelativeDate($value['ts']) ?></td>
+                            </tr>
                         <?php endforeach; ?>
                     </table>
                 </div>
