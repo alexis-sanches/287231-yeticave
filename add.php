@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    if (is_uploaded_file('image')) {
-        move_uploaded_file('image', 'img/');
+    if (is_uploaded_file($_FILES['image'])) {
+        move_uploaded_file($_FILES['image'], 'img/');
     }
 
     if (count($errors) == 0) {
