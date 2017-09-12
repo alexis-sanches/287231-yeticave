@@ -1,10 +1,19 @@
 <?php
 
 require_once 'functions.php';
-//require_once 'lot.php';
+
+$categories = [
+    'Доски и лыжи',
+    'Крепления',
+    'Ботинки',
+    'Одежда',
+    'Инструменты',
+    'Разное'
+];
 
 $main_content = renderTemplate('templates/add.php', [
-    'errors' => $errors
+    'errors' => [],
+    'categories' => $categories,
 ]);
 
 
@@ -21,9 +30,8 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($_POST as $key => $value) {
-        if (in_array($key, $required) && $value = '') {
+        if (in_array($key, $required) && !$value) {
             $errors[] = $key;
-            break;
         }
 
         if (in_array($key, $rules)) {
@@ -35,15 +43,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    if (is_uploaded_file($_FILES['image'])) {
-        move_uploaded_file($_FILES['image'], 'img/');
+    $image_url = '';
+
+    if (isset($_FILES['image'])) {
+
+
+        if (is_uploaded_file($_FILES['image']['tmp_name'])) {
+            $file_name = $_FILES['image']['name'];
+            $file_path = __DIR__ . '/img/';
+
+            $file_info = finfo_open(FILEINFO_MIME_TYPE);
+            $file_type = finfo_file($file_info, $file_name);
+
+            if ($file_type != 'image/jpeg' || $file_type != 'image/png') {
+                $errors[] = 'image';
+            }
+
+            $image_url = '/img/' . $file_name;
+
+            move_uploaded_file($_FILES['image']['tmp_name'], $file_path . $file_name);
+        }
     }
 
-    if (count($errors) == 0) {
-        header('Location: /add.php?success=true');
-    }
-
-    if (isset($_GET['success'])) {
+    if (empty($errors) == 0) {
         $main_content = renderTemplate('templates/lot.php', [
             'bets' => [],
             'lot' => [
@@ -51,7 +73,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'category' => $_POST['category'],
                 'description' => $_POST['message'],
                 'price' => $_POST['lot-rate'],
+                'image_url' => $image_url
             ]
+        ]);
+    } else {
+        $main_content = renderTemplate('templates/add.php', [
+            'errors' => $errors,
+            'categories' => $categories,
         ]);
     }
 }

@@ -30,8 +30,6 @@ $categories = [
     'Разное'
 ];
 
-
-
 $main_content = renderTemplate('templates/index.php', [
     'goods' => $goods,
     'categories' => $categories
