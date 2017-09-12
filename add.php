@@ -46,26 +46,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $image_url = '';
 
     if (isset($_FILES['image'])) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $file_name = $_FILES['image']['tmp_name'];
+        $file_path = __DIR__ . '/img/';
 
+        $file_type = finfo_file($finfo, $file_name);
+
+        if ($file_type != 'image/jpeg' || $file_type != 'image/png') {
+            $errors[] = 'image';
+        }
 
         if (is_uploaded_file($_FILES['image']['tmp_name'])) {
-            $file_name = $_FILES['image']['name'];
-            $file_path = __DIR__ . '/img/';
+            $image_url = '/img/' . $_FILES['image']['name'];
 
-            $file_info = finfo_open(FILEINFO_MIME_TYPE);
-            $file_type = finfo_file($file_info, $file_name);
-
-            if ($file_type != 'image/jpeg' || $file_type != 'image/png') {
-                $errors[] = 'image';
-            }
-
-            $image_url = '/img/' . $file_name;
-
-            move_uploaded_file($_FILES['image']['tmp_name'], $file_path . $file_name);
+            move_uploaded_file($file_name, $file_path . $_FILES['image']['name']);
         }
     }
 
-    if (empty($errors) == 0) {
+    if (count($errors) == 0) {
         $main_content = renderTemplate('templates/lot.php', [
             'bets' => [],
             'lot' => [

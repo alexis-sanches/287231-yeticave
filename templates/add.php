@@ -21,7 +21,7 @@
         </li>
     </ul>
 </nav>
-<form class="form form--add-lot container<?=count($errors) ? ' form--invalid' : '' ?>" action="add.php" method="post" novalidate enctype="multipart/form-data">
+<form class="form form--add-lot container<?=count($errors) ? ' form--invalid' : '' ?>" action="add.php" method="post" enctype="multipart/form-data">
     <h2>Добавление лота</h2>
     <div class="form__container-two">
         <div class="form__item<?=in_array('lot-name', $errors) ? ' form__item--invalid' : '' ?>">
@@ -29,12 +29,12 @@
             <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота" value="<?=$_POST['lot-name'] ?? '' ?>" required>
             <span class="form__error"><?=in_array('lot-name', $errors) ? 'Проверьте, что поле заполнено' : '' ?></span>
         </div>
-        <div class="form__item<?php print(in_array('lot-name', $errors) ? ' form__item--invalid' : '') ?>">
+        <div class="form__item<?=in_array('category', $errors) ? ' form__item--invalid' : '' ?>">
             <label for="category">Категория</label>
             <select id="category" name="category" required>
-                <option>Выберите категорию</option>
+                <option value="">Выберите категорию</option>
                 <?php foreach ($categories as $key => $value): ?>
-                <option><?=$value; ?></option>
+                <option value="<?=$key; ?>" <?=$_POST['category'] == $key ? 'selected' : '' ?>><?=$value; ?></option>
                 <?php endforeach; ?>
             </select>
             <span class="form__error"><?=in_array('category', $errors) ? 'Укажите категорию' : '' ?></span>
@@ -42,7 +42,7 @@
     </div>
     <div class="form__item form__item--wide<?=in_array('message', $errors) ? ' form__item--invalid' : '' ?>">
         <label for="message">Описание</label>
-        <textarea id="message" name="message" placeholder="Напишите описание лота" value="<?=$_POST['message'] ?? '' ?>" required></textarea>
+        <textarea id="message" name="message" placeholder="Напишите описание лота" required><?=$_POST['message'] ?? '' ?></textarea>
         <span class="form__error"><?=in_array('message', $errors) ? 'Проверьте, что поле заполнено' : '' ?></span>
     </div>
     <div class="form__item form__item--file<?=is_uploaded_file($_FILES['image']['tmp_name']) ? " form__item--uploaded" : ""; ?>"> <!--  -->
