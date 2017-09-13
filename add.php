@@ -11,12 +11,6 @@ $categories = [
     'Разное'
 ];
 
-$main_content = renderTemplate('templates/add.php', [
-    'errors' => [],
-    'categories' => $categories,
-]);
-
-
 function validateNumber($value) {
     return filter_var($value, FILTER_VALIDATE_INT);
 }
@@ -45,14 +39,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $image_url = '';
 
-    if (isset($_FILES['image'])) {
+    if (isset($_FILES['image']) && UPLOAD_ERR_OK == $_FILES['image']['error']) {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_name = $_FILES['image']['tmp_name'];
         $file_path = __DIR__ . '/img/';
 
         $file_type = finfo_file($finfo, $file_name);
 
-        if ($file_type != 'image/jpeg' || $file_type != 'image/png') {
+        if ($file_type != 'image/jpeg' && $file_type != 'image/png') {
             $errors[] = 'image';
         }
 
@@ -64,23 +58,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (count($errors) == 0) {
-        $main_content = renderTemplate('templates/lot.php', [
+        $template_path = 'templates/lot.php';
+        $template_data = [
             'bets' => [],
             'lot' => [
                 'title' => $_POST['lot-name'],
-                'category' => $_POST['category'],
+                'category' => $categories[$_POST['category']],
                 'description' => $_POST['message'],
                 'price' => $_POST['lot-rate'],
                 'image_url' => $image_url
             ]
-        ]);
+        ];
     } else {
-        $main_content = renderTemplate('templates/add.php', [
+        $template_path = 'templates/add.php';
+        $template_data = [
             'errors' => $errors,
             'categories' => $categories,
-        ]);
+        ];
     }
+} else {
+    $template_path = 'templates/add.php';
+    $template_data = [
+        'errors' => [],
+        'categories' => $categories,
+    ];
 }
+
+$main_content = renderTemplate($template_path, $template_data);
 
 $layout_content = renderTemplate('templates/layout.php', [
     'main_content' => $main_content,

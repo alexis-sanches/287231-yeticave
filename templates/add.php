@@ -21,7 +21,7 @@
         </li>
     </ul>
 </nav>
-<form class="form form--add-lot container<?=count($errors) ? ' form--invalid' : '' ?>" action="add.php" method="post" enctype="multipart/form-data">
+<form class="form form--add-lot container<?=count($errors) ? ' form--invalid' : '' ?>" action="add.php" method="post" novalidate enctype="multipart/form-data">
     <h2>Добавление лота</h2>
     <div class="form__container-two">
         <div class="form__item<?=in_array('lot-name', $errors) ? ' form__item--invalid' : '' ?>">
@@ -34,7 +34,7 @@
             <select id="category" name="category" required>
                 <option value="">Выберите категорию</option>
                 <?php foreach ($categories as $key => $value): ?>
-                <option value="<?=$key; ?>" <?=$_POST['category'] == $key ? 'selected' : '' ?>><?=$value; ?></option>
+                <option value="<?=$key + 1; ?>" <?=$_POST['category'] == $key + 1 ? 'selected' : '' ?>><?=$value; ?></option>
                 <?php endforeach; ?>
             </select>
             <span class="form__error"><?=in_array('category', $errors) ? 'Укажите категорию' : '' ?></span>
