@@ -9,37 +9,29 @@ $user_avatar = 'img/user.jpg';
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    function getEmails($arr) {
-        return $arr['email'];
-    }
 
-    $emails = array_map('getEmails', $users);
+    $emails = array_column($users, 'email');
 
     foreach ($_POST as $key => $value) {
         if (!$value) {
-            $errors[] = $key;
-            break;
+            $errors += [$key => $key == 'email' ? 'Введите email' : 'Введите пароль'];
         }
     }
 
-    if (!in_array($_POST['email'], $emails)) {
-        $errors[] = 'email';
+    if ($_POST['email'] && !in_array($_POST['email'], $emails)) {
+        $errors += ['email' => 'Пользователя с таким e-mail не существует'];
     } else {
-        $user = array_search($_POST['email'], $emails);
+        $user_id = array_search($_POST['email'], $emails);
     }
 
-    if ($_POST['password'] && isset($user, $users)) {
-        if (!password_verify($_POST['password'], $users[$user]['password'])) {
-            $errors[] = 'password';
+    if ($_POST['password'] && in_array($_POST['email'], $emails)) {
+        if (!password_verify($_POST['password'], $users[$user_id]['password'])) {
+            $errors += ['password' => 'Неверный пароль'];
         }
     }
 
     if (count($errors) == 0) {
-        $template_data = [
-            'errors' => $errors
-        ];
-
-        $_SESSION['user'] = $users[$user];
+        $_SESSION['user'] = $users[$user_id];
 
         header('Location: /index.php');
     } else {

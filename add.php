@@ -4,7 +4,6 @@ session_start();
 
 $user_avatar = 'img/user.jpg';
 
-
 require_once 'functions.php';
 
 $categories = [
@@ -94,8 +93,6 @@ if (isset($_SESSION['user'])) {
 
     $layout_content = renderTemplate('templates/layout.php', [
         'main_content' => $main_content,
-        'is_auth' => $is_auth,
-        'user_name' => $user_name,
         'user_avatar' => $user_avatar,
         'title' => 'Добавление лота'
     ]);
