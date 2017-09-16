@@ -2,9 +2,8 @@
 require_once 'functions.php';
 require_once 'lot_list.php';
 
-$is_auth = (bool) rand(0, 1);
+session_start();
 
-$user_name = 'Константин';
 $user_avatar = 'img/user.jpg';
 
 // устанавливаем часовой пояс в Московское время
@@ -37,8 +36,6 @@ $main_content = renderTemplate('templates/index.php', [
 
 $layout_content = renderTemplate('templates/layout.php', [
     'main_content' => $main_content,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
     'user_avatar' => $user_avatar,
     'title' => 'Главная'
 ]);
