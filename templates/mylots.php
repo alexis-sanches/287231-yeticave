@@ -29,7 +29,7 @@
         <tr class="rates__item">
             <td class="rates__info">
                 <div class="rates__img">
-                    <img src="<?=$bet['image_url']; ?>" width="54" height="40" alt="Сноуборд">
+                    <img src="<?=$bet['image_url']; ?>" width="54" height="40" alt="<?=$bet['title']; ?>">
                 </div>
                 <h3 class="rates__title"><a href="../lot.php?lot=<?=$bet['id'] ?>"><?=$bet['title']; ?></a></h3>
             </td>
@@ -37,10 +37,10 @@
                 <?=$bet['category']; ?>
             </td>
             <td class="rates__timer">
-                <div class="timer timer--finishing">07:13:34</div>
+                <div class="timer timer--finishing"><?=$bet['remaining']; ?></div>
             </td>
             <td class="rates__price">
-                <?=$bet['cost']; ?>
+                <?=$bet['cost']; ?> р.
             </td>
             <td class="rates__time">
                 <?=getRelativeDate($bet['time']); ?>

@@ -47,10 +47,10 @@
                 </div>
                 <?php if (isset($_SESSION['user']) && !isset($_COOKIE['bet'.$id])): ?>
 
-                <form class="lot-item__form" novalidate action="lot.php?lot=<?=$id?>" method="post">
+                <form class="lot-item__form" novalidate action="" method="post">
                     <p class="lot-item__form-item">
                         <label for="cost">Ваша ставка</label>
-                        <input id="cost" type="number" name="cost" required placeholder="12 000" value="<?=$_POST['cost']; ?>">
+                        <input id="cost" type="number" name="cost" required placeholder="12 000">
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
                 </form>

@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cost'])) {
     ];
 
     setcookie('bet' . $_GET['lot'], json_encode($value), strtotime('next month'), '/');
+
+    header('Location: mylots.php');
 }
 
 $bets = [

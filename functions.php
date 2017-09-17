@@ -28,3 +28,13 @@ function getRelativeDate($ts) {
         return floor($time_left / 60) . ' минут назад';
     }
 }
+
+function lotTimeRemaining() {
+    date_default_timezone_set('Europe/Moscow');
+    $tomorrow = strtotime('tomorrow midnight');
+    $now = strtotime('now');
+
+    $lot_time_remaining = date("H:i", $tomorrow - $now);
+
+    return $lot_time_remaining;
+}

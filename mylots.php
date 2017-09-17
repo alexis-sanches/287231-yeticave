@@ -10,9 +10,15 @@ $bets = [];
 
 foreach ($_COOKIE as $name => $value) {
     if (substr($name, 0, 3) == 'bet') {
-        $lot_id = substr($name, 3, 1);
-        $lot = $goods[$lot_id];
-        $bet = json_decode($value);
+        $lot_id = substr($name, 3);
+
+        $lot = [];
+
+        if (isset($goods[$lot_id])) {
+            $lot = $goods[$lot_id];
+        }
+
+        $bet = json_decode($value, true);
 
         $bets[] = [
             'id' => $lot_id,
@@ -20,7 +26,8 @@ foreach ($_COOKIE as $name => $value) {
             'image_url' => $lot['image_url'],
             'category' => $lot['category'],
             'cost' => $bet['cost'],
-            'time' => $bet['time']
+            'time' => $bet['time'],
+            'remaining' => lotTimeRemaining()
         ];
     }
 }
