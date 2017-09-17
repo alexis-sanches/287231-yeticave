@@ -19,6 +19,17 @@ if (isset($_GET['lot']) && isset($goods[$_GET['lot']])) {
     exit();
 }
 
+$errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cost'])) {
+    $value = [
+        'cost' => $_POST['cost'],
+        'time' => strtotime('now')
+    ];
+
+    setcookie('bet' . $_GET['lot'], json_encode($value), strtotime('next month'), '/');
+}
+
 $bets = [
     ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) .' minute')],
     ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) .' hour')],
@@ -26,25 +37,12 @@ $bets = [
     ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
 ];
 
-function getRelativeDate($ts) {
-    $current_time = strtotime('now');
-    $time_left = $current_time - $ts;
-    $hour = 3600;
-    $day = 86400;
-
-    if ($time_left >= $day) {
-        return date("d.m.Y H:i", $ts);
-    } elseif ($time_left >= $hour) {
-        return floor($time_left / 3600) . ' часов назад';
-    } else {
-        return floor($time_left / 60) . ' минут назад';
-    }
-}
-
 $main_content = renderTemplate('templates/lot.php', [
     'goods' => $goods,
     'bets' => $bets,
-    'lot' => $lot
+    'lot' => $lot,
+    'id' => $_GET['lot'],
+    'errors' => $errors
 ]);
 
 $layout_content = renderTemplate('templates/layout.php', [

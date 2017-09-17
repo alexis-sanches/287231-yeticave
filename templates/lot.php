@@ -32,7 +32,6 @@
             <p class="lot-item__description"><?=$lot['description']; ?></p>
         </div>
         <div class="lot-item__right">
-            <?php if (isset($_SESSION['user'])): ?>
             <div class="lot-item__state">
                 <div class="lot-item__timer timer">
                     10:54:12
@@ -46,15 +45,18 @@
                         Мин. ставка <span>12 000 р</span>
                     </div>
                 </div>
-                <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
+                <?php if (isset($_SESSION['user']) && !isset($_COOKIE['bet'.$id])): ?>
+
+                <form class="lot-item__form" novalidate action="lot.php?lot=<?=$id?>" method="post">
                     <p class="lot-item__form-item">
                         <label for="cost">Ваша ставка</label>
-                        <input id="cost" type="number" name="cost" placeholder="12 000">
+                        <input id="cost" type="number" name="cost" required placeholder="12 000" value="<?=$_POST['cost']; ?>">
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
                 </form>
+                <?php endif; ?>
+
             </div>
-            <?php endif; ?>
             <div class="history">
                 <h3>История ставок (<span><?=count($bets); ?></span>)</h3>
                 <table class="history__list">
