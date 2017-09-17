@@ -12,12 +12,12 @@ foreach ($_COOKIE as $name => $value) {
     if (substr($name, 0, 3) == 'bet') {
         $lot_id = substr($name, 3);
 
-        $lot = [];
-
-        if (isset($goods[$lot_id])) {
-            $lot = $goods[$lot_id];
+        if (!isset($goods[$lot_id])) {
+            continue;
         }
 
+        $lot = $goods[$lot_id];
+        
         $bet = json_decode($value, true);
 
         $bets[] = [
