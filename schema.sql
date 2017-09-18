@@ -2,41 +2,41 @@ CREATE DATABASE yeticave;
 USE yeticave;
 
 CREATE TABLE categories (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  title CHAR(32)
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  title CHAR(32) NOT NULL
 );
 
 CREATE TABLE lots (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   created_at DATETIME,
-  title CHAR(128),
-  description TEXT(500),
-  image_url CHAR(128),
-  price INT,
-  finished_at DATETIME,
-  bet_step INT,
-  likes INT,
-  author_id INT,
-  winner_id INT,
-  category_id TINYINT
+  title CHAR(128) NOT NULL,
+  description TEXT(500) NOT NULL,
+  image_url CHAR(128) NOT NULL,
+  price FLOAT NOT NULL,
+  finished_at DATETIME NOT NULL,
+  bet_step INT UNSIGNED NOT NULL,
+  likes INT UNSIGNED DEFAULT 0,
+  author_id INT UNSIGNED,
+  winner_id INT UNSIGNED,
+  category_id INT UNSIGNED
 );
 
 CREATE TABLE bets (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   created_at DATETIME,
-  cost INT,
-  user_id INT,
-  lot_id INT
+  cost INT UNSIGNED NOT NULL,
+  user_id INT UNSIGNED,
+  lot_id INT UNSIGNED
 );
 
 CREATE TABLE users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   created_at DATETIME,
-  email CHAR(128),
-  name CHAR(32),
-  password CHAR(32),
+  email CHAR(128) NOT NULL,
+  name CHAR(32) NOT NULL,
+  password CHAR(128) NOT NULL,
   image_url CHAR(128),
-  contacts CHAR(128)
+  contacts CHAR(128) NOT NULL
 );
 
 CREATE UNIQUE INDEX title ON categories(title);
