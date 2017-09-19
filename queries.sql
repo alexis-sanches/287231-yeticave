@@ -43,7 +43,7 @@ SELECT l.id, l.title, price, image_url, c.title
 FROM lots l
   JOIN categories c
     ON l.category_id = c.id
-WHERE winner IS NULL
+WHERE winner_id IS NULL
 ORDER BY created_at DESC;
 
 /* Найти лот по его названию или описанию */
