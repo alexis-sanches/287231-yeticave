@@ -2,6 +2,8 @@
 
 require_once 'functions.php';
 require_once 'lot_list.php';
+require_once 'mysql_helper.php';
+require_once 'init.php';
 
 session_start();
 
