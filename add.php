@@ -5,6 +5,8 @@ session_start();
 $user_avatar = 'img/user.jpg';
 
 require_once 'functions.php';
+require_once 'mysql_helper.php';
+require_once 'init.php';
 
 $categories = [
     'Доски и лыжи',
