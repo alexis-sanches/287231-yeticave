@@ -1,4 +1,5 @@
 <?php
+require_once 'mysql_helper.php';
 
 function renderTemplate($path, $arr) {
     if (!file_exists($path)) {
@@ -37,4 +38,49 @@ function lotTimeRemaining() {
     $lot_time_remaining = date("H:i", $tomorrow - $now);
 
     return $lot_time_remaining;
+}
+
+function selectFromDatabase($connect, $query, $values = []) {
+    $stmt = db_get_prepare_stmt($connect, $query, $values);
+
+    $result = mysqli_stmt_execute($stmt);
+
+    if ($result) {
+        return mysqli_stmt_fetch($stmt);
+    } else {
+        return [];
+    }
+}
+
+function insertIntoDatabase($connect, $table, $values) {
+    $keys = [];
+    $vals = [];
+
+    foreach ($values as $key => $value) {
+        array_push($keys, $key);
+        array_push($vals, $value);
+    }
+
+    $placeholders = array_fill(0, count($keys), '?');
+
+    $keys_str = implode(', ', $keys);
+    $values_str = implode(', ', $placeholders);
+
+    $query = 'INSERT INTO ' . $table . '(' . $keys_str . ') VALUES (' . $values_str .  ')';
+
+    $stmt = db_get_prepare_stmt($connect, $query, $vals);
+
+    $result = mysqli_stmt_execute($stmt);
+
+    if (!$result) {
+        return false;
+    }
+
+    return mysqli_insert_id($connect);
+}
+
+function randomQuery($connect, $query, $values = []) {
+    $stmt = db_get_prepare_stmt($connect, $query, $values);
+
+    return mysqli_stmt_execute($stmt);
 }
