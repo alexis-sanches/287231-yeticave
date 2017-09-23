@@ -46,21 +46,16 @@ function selectFromDatabase($connect, $query, $values = []) {
     $result = mysqli_stmt_execute($stmt);
 
     if ($result) {
-        return mysqli_stmt_fetch($stmt);
+        $query_res = mysqli_stmt_get_result($stmt);
+        return mysqli_fetch_all($query_res, MYSQLI_ASSOC);
     } else {
         return [];
     }
 }
 
 function insertIntoDatabase($connect, $table, $values) {
-    $keys = [];
-    $vals = [];
-
-    foreach ($values as $key => $value) {
-        array_push($keys, $key);
-        array_push($vals, $value);
-    }
-
+    $keys = array_keys($values);
+    $vals = array_values($values);
     $placeholders = array_fill(0, count($keys), '?');
 
     $keys_str = implode(', ', $keys);
