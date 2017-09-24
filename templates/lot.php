@@ -1,24 +1,11 @@
 <?php ?>
 <nav class="nav">
     <ul class="nav__list container">
-        <li class="nav__item">
-            <a href="">Доски и лыжи</a>
-        </li>
-        <li class="nav__item">
-            <a href="">Крепления</a>
-        </li>
-        <li class="nav__item">
-            <a href="">Ботинки</a>
-        </li>
-        <li class="nav__item">
-            <a href="">Одежда</a>
-        </li>
-        <li class="nav__item">
-            <a href="">Инструменты</a>
-        </li>
-        <li class="nav__item">
-            <a href="">Разное</a>
-        </li>
+        <?php foreach ($categories as $key => $value): ?>
+            <li class="nav__item">
+                <a href="all-lots.html"><?=$value['title']; ?></a>
+            </li>
+        <?php endforeach; ?>
     </ul>
 </nav>
 <section class="lot-item container">
@@ -34,23 +21,22 @@
         <div class="lot-item__right">
             <div class="lot-item__state">
                 <div class="lot-item__timer timer">
-                    10:54:12
+                    <?=date('z д. H ч. i м.', strtotime($lot['finished_at']) - strtotime('now')); ?>
                 </div>
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
                         <span class="lot-item__amount">Текущая цена</span>
-                        <span class="lot-item__cost"><?=$lot['price']; ?> р.</span>
+                        <span class="lot-item__cost"><?=$lot['curr_price']; ?> р.</span>
                     </div>
                     <div class="lot-item__min-cost">
-                        Мин. ставка <span>12 000 р</span>
+                        Мин. ставка <span><?=$lot['min_price']; ?> р</span>
                     </div>
                 </div>
-                <?php if (isset($_SESSION['user']) && !isset($_COOKIE['bet'.$id])): ?>
-
+                <?php if (isset($_SESSION['user'])): ?>
                 <form class="lot-item__form" novalidate action="" method="post">
                     <p class="lot-item__form-item">
                         <label for="cost">Ваша ставка</label>
-                        <input id="cost" type="number" name="cost" required placeholder="12 000">
+                        <input id="cost" type="number" name="cost" required placeholder="<?=$lot['min_price']; ?> ">
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
                 </form>
@@ -62,9 +48,9 @@
                 <table class="history__list">
                     <?php foreach ($bets as $key => $value): ?>
                         <tr class="history__item">
-                            <td class="history__name"><?=$value['name'] ?></td>
-                            <td class="history__price"><?=$value['price'] ?> р</td>
-                            <td class="history__time"><?=getRelativeDate($value['ts']) ?></td>
+                            <td class="history__name"><?=$value['user_name'] ?></td>
+                            <td class="history__price"><?=$value['cost'] ?> р</td>
+                            <td class="history__time"><?=getRelativeDate(strtotime($value['created_at'])) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </table>

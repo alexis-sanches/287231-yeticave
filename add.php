@@ -8,14 +8,7 @@ require_once 'functions.php';
 require_once 'mysql_helper.php';
 require_once 'init.php';
 
-$categories = [
-    'Доски и лыжи',
-    'Крепления',
-    'Ботинки',
-    'Одежда',
-    'Инструменты',
-    'Разное'
-];
+$categories = selectFromDatabase($con, 'SELECT * FROM categories');
 
 function validateNumber($value) {
     return filter_var($value, FILTER_VALIDATE_INT);
@@ -65,37 +58,34 @@ if (isset($_SESSION['user'])) {
         }
 
         if (count($errors) == 0) {
-            $template_path = 'templates/lot.php';
-            $template_data = [
-                'bets' => [],
-                'lot' => [
-                    'title' => $_POST['lot-name'],
-                    'category' => $categories[$_POST['category']],
-                    'description' => $_POST['message'],
-                    'price' => $_POST['lot-rate'],
-                    'image_url' => $image_url
-                ]
+            $now = date('Y-m-d H:i:s', strtotime('now'));
+            $finished_at = date('Y-m-d H:i:s', strtotime($_POST['lot-date']));
+            $values = [
+                'created_at' => $now,
+                'title' => $_POST['lot-name'],
+                'description' => $_POST['message'],
+                'image_url' => $image_url,
+                'price' => intval($_POST['lot-rate']),
+                'finished_at' => $finished_at,
+                'bet_step' => intval($_POST['lot-step']),
+                'likes' => 0,
+                'author_id' => $_SESSION['user']['id'],
+                'category_id' => intval($_POST['category'])
             ];
-        } else {
-            $template_path = 'templates/add.php';
-            $template_data = [
-                'errors' => $errors,
-                'categories' => $categories,
-            ];
+
+            $id = insertIntoDatabase($con, 'lots', $values);
+            header('Location: /lot.php?lot=' . $id);
         }
-    } else {
-        $template_path = 'templates/add.php';
-        $template_data = [
-            'errors' => [],
-            'categories' => $categories,
-        ];
     }
 
-    $main_content = renderTemplate($template_path, $template_data);
+    $main_content = renderTemplate('templates/add.php', [
+        'errors' => $errors,
+        'categories' => $categories
+    ]);
 
     $layout_content = renderTemplate('templates/layout.php', [
         'main_content' => $main_content,
-        'user_avatar' => $user_avatar,
+        'categories' => $categories,
         'title' => 'Добавление лота'
     ]);
 
