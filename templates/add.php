@@ -1,24 +1,11 @@
 <?php ?>
 <nav class="nav">
     <ul class="nav__list container">
-        <li class="nav__item">
-            <a href="all-lots.html">Доски и лыжи</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Крепления</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Ботинки</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Одежда</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Инструменты</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Разное</a>
-        </li>
+        <?php foreach ($categories as $key => $value): ?>
+            <li class="nav__item">
+                <a href="all-lots.php?cat=<?=$value['id']; ?>"><?=$value['title']; ?>"><?=$value['title']; ?></a>
+            </li>
+        <?php endforeach; ?>
     </ul>
 </nav>
 <form class="form form--add-lot container<?=count($errors) ? ' form--invalid' : '' ?>" action="add.php" method="post" novalidate enctype="multipart/form-data">
@@ -34,7 +21,7 @@
             <select id="category" name="category" required>
                 <option value="">Выберите категорию</option>
                 <?php foreach ($categories as $key => $value): ?>
-                <option value="<?=$key + 1; ?>" <?=$_POST['category'] == $key + 1 ? 'selected' : '' ?>><?=$value; ?></option>
+                <option value="<?=$value['id']; ?>" <?=$_POST['category'] == $value['id'] ? 'selected' : '' ?>><?=$value['title']; ?></option>
                 <?php endforeach; ?>
             </select>
             <span class="form__error"><?=in_array('category', $errors) ? 'Укажите категорию' : '' ?></span>

@@ -1,58 +1,76 @@
 <?php
 
 require_once 'functions.php';
-require_once 'lot_list.php';
 require_once 'mysql_helper.php';
 require_once 'init.php';
 
-session_start();
+$categories = selectFromDatabase($con, 'SELECT * FROM categories');
 
-$user_avatar = 'img/user.jpg';
+if (isset($_GET['lot'])) {
+    $lot_query = '
+        SELECT l.id, l.title, description, image_url, c.title AS category, price, COALESCE(MAX(cost), price) AS curr_price, (COALESCE(MAX(cost), price) + bet_step) AS min_price, bet_step, finished_at   
+        FROM lots l 
+        JOIN categories c ON c.id = l.category_id 
+        LEFT JOIN bets b ON l.id = b.lot_id
+        WHERE l.id = ?
+        GROUP BY l.id';
+    $lots = selectFromDatabase($con, $lot_query, [$_GET['lot']]);
 
-
-function getLot($arr, $i) {
-    return $arr[$i];
-}
-
-if (isset($_GET['lot']) && isset($goods[$_GET['lot']])) {
-    $lot = getLot($goods, $_GET['lot']);
+    if (count($lots) == 0) {
+        http_response_code(404);
+        exit();
+    } else {
+        $lot = $lots[0];
+    }
 } else {
     http_response_code(404);
     exit();
 }
 
+$bets_query = 'SELECT b.id, b.created_at AS created_at, cost, u.name AS user_name FROM bets b 
+    JOIN users u ON u.id = b.user_id
+    LEFT JOIN lots l ON l.id = b.lot_id
+    WHERE lot_id = ?
+    GROUP BY b.id';
+
+$bets = selectFromDatabase($con, $bets_query, [$_GET['lot']]);
+
 $errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cost'])) {
-    $value = [
-        'cost' => $_POST['cost'],
-        'time' => strtotime('now')
-    ];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!isset($_POST['cost'])) {
+        $errors[] = 'cost';
+    } else {
+        if (intval($_POST['cost']) < $lot['min_price']) {
+            $errors[] = 'cost';
+        }
+    }
 
-    setcookie('bet' . $_GET['lot'], json_encode($value), strtotime('next month'), '/');
+    if (count($errors) == 0) {
+        $now = date('Y-m-d H:i:s', strtotime('now'));
+        $values = [
+            'created_at' => $now,
+            'cost' => $_POST['cost'],
+            'user_id' => $_SESSION['user']['id'],
+            'lot_id' => $_GET['lot'],
+        ];
 
-    header('Location: mylots.php');
+        insertIntoDatabase($con, 'bets', $values);
+        header('Location: mylots.php');
+    }
 }
 
-$bets = [
-    ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) .' minute')],
-    ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) .' hour')],
-    ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) .' hour')],
-    ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
-];
-
 $main_content = renderTemplate('templates/lot.php', [
-    'goods' => $goods,
     'bets' => $bets,
     'lot' => $lot,
-    'id' => $_GET['lot'],
-    'errors' => $errors
+    'errors' => $errors,
+    'categories' => $categories
 ]);
 
 $layout_content = renderTemplate('templates/layout.php', [
     'main_content' => $main_content,
-    'user_avatar' => $user_avatar,
-    'title' => $lot['title']
+    'title' => $lot['title'],
+    'categories' => $categories
 ]);
 
 print($layout_content);

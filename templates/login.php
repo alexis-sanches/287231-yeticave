@@ -2,24 +2,11 @@
 
 <nav class="nav">
     <ul class="nav__list container">
-        <li class="nav__item">
-            <a href="all-lots.html">Доски и лыжи</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Крепления</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Ботинки</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Одежда</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Инструменты</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Разное</a>
-        </li>
+        <?php foreach ($categories as $key => $value): ?>
+            <li class="nav__item">
+                <a href="all-lots.php?cat=<?=$value['id']; ?>"><?=$value['title']; ?>"><?=$value['title']; ?></a>
+            </li>
+        <?php endforeach; ?>
     </ul>
 </nav>
 <form class="form container<?=count($errors) > 0 ? ' form--invalid' : ''; ?>" action="login.php" enctype="application/x-www-form-urlencoded" method="post" novalidate> <!-- form--invalid -->

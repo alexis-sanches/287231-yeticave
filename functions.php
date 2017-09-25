@@ -30,9 +30,9 @@ function getRelativeDate($ts) {
     }
 }
 
-function lotTimeRemaining() {
+function lotTimeRemaining($date) {
     date_default_timezone_set('Europe/Moscow');
-    $tomorrow = strtotime('tomorrow midnight');
+    $tomorrow = strtotime($date);
     $now = strtotime('now');
 
     $lot_time_remaining = date("H:i", $tomorrow - $now);
