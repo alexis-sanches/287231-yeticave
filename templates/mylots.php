@@ -25,7 +25,7 @@
             </td>
             <td class="rates__timer">
                 <div class="timer timer--finishing">
-                    <?=date('z д. H ч. i м.', strtotime($bet['lot_date']) - strtotime('now')); ?>
+                    <?=date('z.H:i', strtotime($bet['lot_date']) - strtotime('now')); ?>
                 </div>
             </td>
             <td class="rates__price">

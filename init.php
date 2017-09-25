@@ -1,6 +1,8 @@
 <?php
 require_once 'functions.php';
 
+session_start();
+
 $host = 'localhost';
 $username = 'root';
 $password = '';
@@ -17,7 +19,6 @@ if ($con == false) {
 
     $layout_content = renderTemplate('templates/layout.php', [
         'main_content' => $main_content,
-        'user_avatar' => $user_avatar,
         'title' => 'Ошибка подключения к БД'
     ]);
 

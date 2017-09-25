@@ -4,13 +4,7 @@ require_once 'functions.php';
 require_once 'mysql_helper.php';
 require_once 'init.php';
 
-session_start();
-
 $categories = selectFromDatabase($con, 'SELECT * FROM categories');
-
-function getLot($arr, $i) {
-    return $arr[$i];
-}
 
 if (isset($_GET['lot'])) {
     $lot_query = '
@@ -20,7 +14,7 @@ if (isset($_GET['lot'])) {
         LEFT JOIN bets b ON l.id = b.lot_id
         WHERE l.id = ?
         GROUP BY l.id';
-    $lots = selectFromDatabase($con, $lot_query, [intval($_GET['lot'])]);
+    $lots = selectFromDatabase($con, $lot_query, [$_GET['lot']]);
 
     if (count($lots) == 0) {
         http_response_code(404);
@@ -56,9 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $now = date('Y-m-d H:i:s', strtotime('now'));
         $values = [
             'created_at' => $now,
-            'cost' => intval($_POST['cost']),
+            'cost' => $_POST['cost'],
             'user_id' => $_SESSION['user']['id'],
-            'lot_id' => intval($_GET['lot']),
+            'lot_id' => $_GET['lot'],
         ];
 
         insertIntoDatabase($con, 'bets', $values);

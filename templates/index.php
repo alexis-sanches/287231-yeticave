@@ -4,24 +4,11 @@
     <h2 class="promo__title">Нужен стафф для катки?</h2>
     <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
     <ul class="promo__list">
-        <li class="promo__item promo__item--boards">
-            <a class="promo__link" href="all-lots.html">Доски и лыжи</a>
+        <?php foreach ($categories as $i => $it): ?>
+        <li class="promo__item promo__item--<?=$it['id']; ?>">
+            <a class="promo__link" href="all-lots.php?cat=<?=$it['id']; ?>"><?=$it['title']; ?></a>
         </li>
-        <li class="promo__item promo__item--attachment">
-            <a class="promo__link" href="all-lots.html">Крепления</a>
-        </li>
-        <li class="promo__item promo__item--boots">
-            <a class="promo__link" href="all-lots.html">Ботинки</a>
-        </li>
-        <li class="promo__item promo__item--clothing">
-            <a class="promo__link" href="all-lots.html">Одежда</a>
-        </li>
-        <li class="promo__item promo__item--tools">
-            <a class="promo__link" href="all-lots.html">Инструменты</a>
-        </li>
-        <li class="promo__item promo__item--other">
-            <a class="promo__link" href="all-lots.html">Разное</a>
-        </li>
+        <?php endforeach; ?>
     </ul>
 </section>
 <section class="lots">
@@ -48,7 +35,7 @@
                             <span class="lot__cost"><?=htmlspecialchars($it['price']); ?><b class="rub">р</b></span>
                         </div>
                         <div class="lot__timer timer">
-                            <?=date('z д. H ч. i м.', strtotime($it['finished_at']) - strtotime('now')); ?>
+                            <?=date('z. H:i', strtotime($it['finished_at']) - strtotime('now')); ?>
                         </div>
                     </div>
                 </div>

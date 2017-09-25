@@ -21,7 +21,7 @@
         <div class="lot-item__right">
             <div class="lot-item__state">
                 <div class="lot-item__timer timer">
-                    <?=date('z д. H ч. i м.', strtotime($lot['finished_at']) - strtotime('now')); ?>
+                    <?=date('z.H:i', strtotime($lot['finished_at']) - strtotime('now')); ?>
                 </div>
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
@@ -33,10 +33,11 @@
                     </div>
                 </div>
                 <?php if (isset($_SESSION['user'])): ?>
-                <form class="lot-item__form" novalidate action="" method="post">
-                    <p class="lot-item__form-item">
+                <form class="lot-item__form<?=count($errors) ? ' form--invalid' : '' ?>" novalidate action="" method="post">
+                    <p class="lot-item__form-item<?=in_array('cost', $errors) ? ' form__item--invalid' : '' ?>">
                         <label for="cost">Ваша ставка</label>
                         <input id="cost" type="number" name="cost" required placeholder="<?=$lot['min_price']; ?> ">
+                        <span class="form__error"><?=in_array('cost', $errors) ? 'Ставка слишком маленькая' : '' ?></span>
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
                 </form>

@@ -2,8 +2,6 @@
 require_once 'functions.php';
 require_once 'init.php';
 
-session_start();
-
 function validateEmail($value) {
     return filter_var($value, FILTER_VALIDATE_EMAIL);
 }

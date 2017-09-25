@@ -1,9 +1,4 @@
 <?php
-
-session_start();
-
-$user_avatar = 'img/user.jpg';
-
 require_once 'functions.php';
 require_once 'mysql_helper.php';
 require_once 'init.php';
@@ -65,12 +60,12 @@ if (isset($_SESSION['user'])) {
                 'title' => $_POST['lot-name'],
                 'description' => $_POST['message'],
                 'image_url' => $image_url,
-                'price' => intval($_POST['lot-rate']),
+                'price' => $_POST['lot-rate'],
                 'finished_at' => $finished_at,
-                'bet_step' => intval($_POST['lot-step']),
+                'bet_step' => $_POST['lot-step'],
                 'likes' => 0,
                 'author_id' => $_SESSION['user']['id'],
-                'category_id' => intval($_POST['category'])
+                'category_id' => $_POST['category']
             ];
 
             $id = insertIntoDatabase($con, 'lots', $values);
