@@ -1,4 +1,3 @@
-<?php ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -53,13 +52,7 @@
 
 <footer class="main-footer">
     <nav class="nav">
-        <ul class="nav__list container">
-            <?php foreach ($categories as $key => $value): ?>
-            <li class="nav__item">
-                <a href="all-lots.php?cat=<?=$value['id']; ?>"><?=$value['title']; ?>"><?=$value['title']; ?></a>
-            </li>
-            <?php endforeach; ?>
-        </ul>
+        <?=$categories_layout; ?>
     </nav>
     <div class="main-footer__bottom container">
         <div class="main-footer__copyright">

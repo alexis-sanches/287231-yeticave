@@ -3,7 +3,6 @@ require_once 'functions.php';
 require_once 'mysql_helper.php';
 require_once 'init.php';
 
-$categories = selectFromDatabase($con, 'SELECT * FROM categories');
 
 function validateNumber($value) {
     return filter_var($value, FILTER_VALIDATE_INT);
@@ -75,12 +74,13 @@ if (isset($_SESSION['user'])) {
 
     $main_content = renderTemplate('templates/add.php', [
         'errors' => $errors,
-        'categories' => $categories
+        'categories' => $categories,
+        'categories_layout' => $categories_layout
     ]);
 
     $layout_content = renderTemplate('templates/layout.php', [
         'main_content' => $main_content,
-        'categories' => $categories,
+        'categories_layout' => $categories_layout,
         'title' => 'Добавление лота'
     ]);
 

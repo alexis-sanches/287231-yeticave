@@ -46,3 +46,5 @@ CREATE UNIQUE INDEX email ON users(email);
 CREATE INDEX title on lots(title);
 
 CREATE INDEX created_at on bets(created_at);
+
+CREATE FULLTEXT INDEX search ON lots (title, description);

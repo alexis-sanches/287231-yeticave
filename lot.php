@@ -4,8 +4,6 @@ require_once 'functions.php';
 require_once 'mysql_helper.php';
 require_once 'init.php';
 
-$categories = selectFromDatabase($con, 'SELECT * FROM categories');
-
 if (isset($_GET['lot'])) {
     $lot_query = '
         SELECT l.id, l.title, description, image_url, c.title AS category, price, COALESCE(MAX(cost), price) AS curr_price, (COALESCE(MAX(cost), price) + bet_step) AS min_price, bet_step, finished_at   
@@ -31,7 +29,7 @@ $bets_query = 'SELECT b.id, b.created_at AS created_at, cost, u.name AS user_nam
     JOIN users u ON u.id = b.user_id
     LEFT JOIN lots l ON l.id = b.lot_id
     WHERE lot_id = ?
-    GROUP BY b.id';
+    GROUP BY b.id ORDER BY b.created_at DESC';
 
 $bets = selectFromDatabase($con, $bets_query, [$_GET['lot']]);
 
@@ -64,13 +62,13 @@ $main_content = renderTemplate('templates/lot.php', [
     'bets' => $bets,
     'lot' => $lot,
     'errors' => $errors,
-    'categories' => $categories
+    'categories_layout' => $categories_layout,
 ]);
 
 $layout_content = renderTemplate('templates/layout.php', [
     'main_content' => $main_content,
     'title' => $lot['title'],
-    'categories' => $categories
+    'categories_layout' => $categories_layout,
 ]);
 
 print($layout_content);

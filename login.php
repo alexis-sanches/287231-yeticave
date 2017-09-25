@@ -5,8 +5,6 @@ require_once 'init.php';
 
 $errors = [];
 
-$categories = selectFromDatabase($con, 'SELECT * FROM categories');
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     foreach ($_POST as $key => $value) {
@@ -30,21 +28,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (count($errors) == 0) {
-        $query = 'SELECT * FROM users WHERE email = ?';
         $_SESSION['user'] = $emails[0];
-
         header('Location: /index.php');
     }
 }
 
 $main_content = renderTemplate('templates/login.php', [
-    'categories' => $categories,
+    'categories_layout' => $categories_layout,
     'errors' => $errors
 ]);
 
 $layout_content = renderTemplate('templates/layout.php', [
     'main_content' => $main_content,
-    'categories' => $categories,
+    'categories_layout' => $categories_layout,
     'title' => 'Вход'
 ]);
 

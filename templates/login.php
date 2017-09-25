@@ -1,13 +1,5 @@
-<?php ?>
-
 <nav class="nav">
-    <ul class="nav__list container">
-        <?php foreach ($categories as $key => $value): ?>
-            <li class="nav__item">
-                <a href="all-lots.php?cat=<?=$value['id']; ?>"><?=$value['title']; ?>"><?=$value['title']; ?></a>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+    <?=$categories_layout; ?>
 </nav>
 <form class="form container<?=count($errors) > 0 ? ' form--invalid' : ''; ?>" action="login.php" enctype="application/x-www-form-urlencoded" method="post" novalidate> <!-- form--invalid -->
     <h2>Вход</h2>

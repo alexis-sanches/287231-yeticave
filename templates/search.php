@@ -1,11 +1,5 @@
 <nav class="nav">
-    <ul class="nav__list container">
-        <?php foreach ($categories as $i => $it): ?>
-        <li class="nav__item">
-            <a href="all-lots.php?cat=<?=$value['id']; ?>"><?=$value['title']; ?>"><?=$it['title']; ?></a>
-        </li>
-        <?php endforeach; ?>
-    </ul>
+    <?=$categories_layout; ?>
 </nav>
 <div class="container">
     <section class="lots">
