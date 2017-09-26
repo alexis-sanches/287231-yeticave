@@ -43,4 +43,12 @@
         <?php endforeach; ?>
     </ul>
 </section>
+<ul class="pagination-list">
+    <li class="pagination-item pagination-item-prev"><a<?=$page == 1 ? '' : ' href="?page=' . ($page - 1) . '"'?>>Назад</a></li>
+    <?php foreach ($range as $value): ?>
+        <li class="pagination-item<?=$page == $value ? ' pagination-item-active' : ''; ?>"><a href="?page=<?=$value; ?>"><?=$value; ?></a></li>
+    <?php endforeach; ?>
+    <li class="pagination-item pagination-item-next">
+        <a<?=$page == count($range) ? '' : ' href="?page=' . ($page + 1) . '"'?>>Вперед</a></li>
+</ul>
 

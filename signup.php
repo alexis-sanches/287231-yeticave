@@ -5,8 +5,6 @@ require_once 'init.php';
 function validateEmail($value) {
     return filter_var($value, FILTER_VALIDATE_EMAIL);
 }
-$categories = selectFromDatabase($con, 'SELECT * FROM categories');
-
 $errors = [];
 
 $required = ['email', 'password', 'name', 'message'];
@@ -73,12 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $main_content = renderTemplate('templates/signup.php', [
     'errors' => $errors,
-    'categories' => $categories,
+    'categories_layout' => $categories_layout,
 ]);
 
 $layout_content = renderTemplate('templates/layout.php', [
     'main_content' => $main_content,
-    'categories' => $categories,
+    'categories_layout' => $categories_layout,
     'title' => 'Регистрация'
 ]);
 

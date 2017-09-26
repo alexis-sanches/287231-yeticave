@@ -1,12 +1,5 @@
-<?php ?>
 <nav class="nav">
-    <ul class="nav__list container">
-        <?php foreach ($categories as $key => $value): ?>
-            <li class="nav__item">
-                <a href="all-lots.php?cat=<?=$value['id']; ?>"><?=$value['title']; ?>"><?=$value['title']; ?></a>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+    <?=$categories_layout; ?>
 </nav>
 <form class="form form--add-lot container<?=count($errors) ? ' form--invalid' : '' ?>" action="add.php" method="post" novalidate enctype="multipart/form-data">
     <h2>Добавление лота</h2>

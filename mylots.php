@@ -3,8 +3,6 @@ require_once 'functions.php';
 require_once 'mysql_helper.php';
 require_once 'init.php';
 
-$categories = selectFromDatabase($con, 'SELECT * FROM categories');
-
 $bets = [];
 
 if (isset($_SESSION['user'])) {
@@ -15,13 +13,13 @@ if (isset($_SESSION['user'])) {
 
 $main_content = renderTemplate('templates/mylots.php', [
     'bets' => $bets,
-    'categories' => $categories
+    'categories_layout' => $categories_layout,
 ]);
 
 $layout_content = renderTemplate('templates/layout.php', [
     'main_content' => $main_content,
     'title' => 'Мои ставки',
-    'categories' => $categories
+    'categories_layout' => $categories_layout,
 ]);
 
 print($layout_content);

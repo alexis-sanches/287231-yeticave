@@ -3,19 +3,32 @@ require_once 'functions.php';
 require_once 'mysql_helper.php';
 require_once 'init.php';
 
-$categories = selectFromDatabase($con, 'SELECT * FROM categories');
+$limit = 3;
+$curr_page = $_GET['page'] ?? 1;
+$total_items = selectFromDatabase($con, 'SELECT COUNT(*) AS cnt FROM lots WHERE winner_id IS NULL')[0]['cnt'];
 
-$lots_query = 'SELECT l.id, l.title, price, image_url, c.title AS cat_title, finished_at FROM lots l JOIN categories c ON l.category_id = c.id WHERE winner_id IS NULL GROUP BY l.id ORDER BY l.created_at DESC';
-$goods = selectFromDatabase($con, $lots_query);
+$offset = ($curr_page - 1) * $limit;
+$range = range(1, ceil($total_items / $limit));
+
+$lots_query = 'SELECT l.id, l.title, price, image_url, c.title AS cat_title, finished_at FROM lots l 
+JOIN categories c ON l.category_id = c.id 
+WHERE winner_id IS NULL 
+GROUP BY l.id 
+ORDER BY l.created_at DESC
+LIMIT ? OFFSET ?';
+
+$goods = selectFromDatabase($con, $lots_query, [$limit, $offset]);
 
 $main_content = renderTemplate('templates/index.php', [
+    'range' => $range,
+    'page' => $curr_page,
     'goods' => $goods,
-    'categories' => $categories
+    'categories' => $categories,
 ]);
 
 $layout_content = renderTemplate('templates/layout.php', [
     'main_content' => $main_content,
-    'categories' => $categories,
+    'categories_layout' => $categories_layout,
     'title' => 'Главная'
 ]);
 

@@ -26,3 +26,8 @@ if ($con == false) {
     exit();
 }
 
+$categories = selectFromDatabase($con, 'SELECT * FROM categories');
+
+$categories_layout = renderTemplate('templates/categories.php', [
+    'categories' => $categories
+]);
