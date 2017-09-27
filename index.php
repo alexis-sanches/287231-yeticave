@@ -23,6 +23,8 @@ $goods = selectFromDatabase($con, $lots_query, [$limit, $offset]);
 
 $main_content = renderTemplate('templates/index.php', [
     'range' => $range,
+    'limit' => $limit,
+    'total_items' => $total_items,
     'page' => $curr_page,
     'goods' => $goods,
     'categories' => $categories,

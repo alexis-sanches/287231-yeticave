@@ -3,9 +3,6 @@ require_once 'functions.php';
 require_once 'init.php';
 require_once 'vendor/autoload.php';
 
-function validateEmail($value) {
-    return filter_var($value, FILTER_VALIDATE_EMAIL);
-}
 $errors = [];
 
 $required = ['email', 'password', 'name', 'message'];
@@ -17,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         if ($key == 'email') {
-            $result = call_user_func('validateEmail', $value);
+            $result = filter_var($value, FILTER_VALIDATE_EMAIL);
 
             if (!$result) {
                 $errors += [$key => 'Введите правильный email'];
@@ -66,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         insertIntoDatabase($con, 'users', $values);
 
-        header('Location: /login.php');
+        header('Location: /login.php?signup=true');
     }
 }
 

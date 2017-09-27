@@ -5,6 +5,8 @@ require_once 'mysql_helper.php';
 require_once 'init.php';
 require_once 'vendor/autoload.php';
 
+$lot = [];
+
 if (isset($_GET['lot'])) {
     $lot_query = '
         SELECT l.id, l.title, description, image_url, c.title AS category, price, COALESCE(MAX(cost), price) AS curr_price, (COALESCE(MAX(cost), price) + bet_step) AS min_price, bet_step, finished_at   

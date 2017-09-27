@@ -25,7 +25,7 @@
                         Мин. ставка <span><?=$lot['min_price']; ?> р</span>
                     </div>
                 </div>
-                <?php if (isset($_SESSION['user'])): ?>
+                <?php if (isset($_SESSION['user']) && (strtotime($lot['finished_at']) > strtotime('now')) && $lot['author_id'] != $_SESSION['user']['id']): ?>
                 <form class="lot-item__form<?=count($errors) ? ' form--invalid' : '' ?>" novalidate action="" method="post">
                     <p class="lot-item__form-item<?=in_array('cost', $errors) ? ' form__item--invalid' : '' ?>">
                         <label for="cost">Ваша ставка</label>
