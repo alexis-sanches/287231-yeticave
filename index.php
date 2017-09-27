@@ -3,6 +3,7 @@ require_once 'functions.php';
 require_once 'mysql_helper.php';
 require_once 'init.php';
 require_once 'vendor/autoload.php';
+require_once 'getwinner.php';
 
 $limit = 3;
 $curr_page = $_GET['page'] ?? 1;
@@ -22,6 +23,8 @@ $goods = selectFromDatabase($con, $lots_query, [$limit, $offset]);
 
 $main_content = renderTemplate('templates/index.php', [
     'range' => $range,
+    'limit' => $limit,
+    'total_items' => $total_items,
     'page' => $curr_page,
     'goods' => $goods,
     'categories' => $categories,

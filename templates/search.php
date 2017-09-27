@@ -3,7 +3,7 @@
 </nav>
 <div class="container">
     <section class="lots">
-        <h2>Результаты поиска по запросу «<span><?=$query; ?></span>»</h2>
+        <h2>Результаты поиска по запросу «<span><?=htmlspecialchars($query); ?></span>»</h2>
         <ul class="lots__list">
             <?php foreach ($goods as $i => $it): ?>
                 <li class="lots__item lot">

@@ -8,10 +8,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['cat'])) {
         if (in_array($_GET['cat'], array_column($categories, 'id'))) {
             $lots_query = 'SELECT l.id, l.title, price, image_url, c.title AS cat_title, finished_at FROM lots l 
-        JOIN categories c ON l.category_id = c.id 
-        WHERE winner_id IS NULL AND c.id = ?
-        GROUP BY l.id 
-        ORDER BY l.created_at DESC';
+            JOIN categories c ON l.category_id = c.id 
+            WHERE winner_id IS NULL AND c.id = ?
+            GROUP BY l.id 
+            ORDER BY l.created_at DESC';
 
             $goods = selectFromDatabase($con, $lots_query, [$_GET['cat'] ?? '']);
 

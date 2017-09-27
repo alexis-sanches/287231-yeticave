@@ -14,29 +14,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    $emails = selectFromDatabase($con, 'SELECT * FROM users WHERE email = ?', [$_POST['email']]);
+    $users = selectFromDatabase($con, 'SELECT * FROM users WHERE email = ?', [$_POST['email']]);
 
-    if (count($emails) == 0) {
+    if (count($users) == 0) {
         $errors += ['email' => 'Пользователя с таким e-mail не существует'];
-    } else {
-        $user_id = $emails[0]['id'];
     }
 
-    if (isset($_POST['password']) && count($emails) != 0) {
-        if (!password_verify($_POST['password'], $emails[0]['password'])) {
+    if (isset($_POST['password']) && count($users) != 0) {
+        if (!password_verify($_POST['password'], $users[0]['password'])) {
             $errors += ['password' => 'Неверный пароль'];
         }
     }
 
     if (count($errors) == 0) {
-        $_SESSION['user'] = $emails[0];
+        $_SESSION['user'] = $users[0];
         header('Location: /index.php');
     }
 }
 
 $main_content = renderTemplate('templates/login.php', [
     'categories_layout' => $categories_layout,
-    'errors' => $errors
+    'errors' => $errors,
+    'message' => ''
 ]);
 
 $layout_content = renderTemplate('templates/layout.php', [

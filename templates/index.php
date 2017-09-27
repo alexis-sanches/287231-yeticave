@@ -43,6 +43,7 @@
         <?php endforeach; ?>
     </ul>
 </section>
+<?php if ($total_items > $limit): ?>
 <ul class="pagination-list">
     <li class="pagination-item pagination-item-prev"><a<?=$page == 1 ? '' : ' href="?page=' . ($page - 1) . '"'?>>Назад</a></li>
     <?php foreach ($range as $value): ?>
@@ -51,4 +52,4 @@
     <li class="pagination-item pagination-item-next">
         <a<?=$page == count($range) ? '' : ' href="?page=' . ($page + 1) . '"'?>>Вперед</a></li>
 </ul>
-
+<?php endif; ?>

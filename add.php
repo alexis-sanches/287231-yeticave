@@ -4,17 +4,21 @@ require_once 'mysql_helper.php';
 require_once 'init.php';
 require_once 'vendor/autoload.php';
 
-
-function validateNumber($value) {
-    return filter_var($value, FILTER_VALIDATE_INT);
-}
-
 $required = ['lot-name', 'category', 'message', 'lot-rate', 'lot-step', 'lot-date'];
 $rules = [
     'lot-rate' => 'validateNumber',
-    'lot-step' => 'validateNumber'
+    'lot-step' => 'validateNumber',
+    'lot-date' => 'validateDate'
 ];
 $errors = [];
+
+function validateNumber($value) {
+    return filter_var($value, FILTER_VALIDATE_INT) && $value > 0;
+}
+
+function validateDate($value) {
+    return strtotime($value) >= strtotime('tomorrow midnight');
+}
 
 if (isset($_SESSION['user'])) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -24,7 +28,7 @@ if (isset($_SESSION['user'])) {
             }
 
             if (in_array($key, $rules)) {
-                $result = call_user_func('validateNumber', $value);
+                $result = call_user_func($rules[$key], $value);
 
                 if (!$result) {
                     $errors[] = $key;
@@ -41,7 +45,7 @@ if (isset($_SESSION['user'])) {
 
             $file_type = finfo_file($finfo, $file_name);
 
-            if ($file_type != 'image/jpeg' && $file_type != 'image/png') {
+            if ($file_type != 'image/jpeg' && $file_type != 'image/png' && $file_type != 'image/jpg') {
                 $errors[] = 'image';
             }
 
