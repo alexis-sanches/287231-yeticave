@@ -3,7 +3,7 @@ require_once 'functions.php';
 require_once 'init.php';
 require_once 'vendor/autoload.php';
 
-$lots_query = 'SELECT l.id AS lot_id, l.title AS title, name, email
+$lots_query = 'SELECT l.id AS lot_id, l.title AS title, name, email, u.id AS user_id
 FROM lots l
   LEFT JOIN bets b ON l.id = b.lot_id
   JOIN users u ON u.id = b.user_id
