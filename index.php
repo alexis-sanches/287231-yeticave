@@ -2,6 +2,7 @@
 require_once 'functions.php';
 require_once 'mysql_helper.php';
 require_once 'init.php';
+require_once 'vendor/autoload.php';
 
 $limit = 3;
 $curr_page = $_GET['page'] ?? 1;

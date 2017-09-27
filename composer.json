@@ -1,6 +1,10 @@
 {
-    "name": "yeticave",
-    "description": "Личный проект «YetiCave» от HTML Academy",
-    "type": "project",
+    "name": "root/287231-yeticave",
+    "authors": [
+        {
+            "name": "Aleksandr",
+            "email": "a.sannikov@netrika.ru"
+        }
+    ],
     "require": {}
 }
