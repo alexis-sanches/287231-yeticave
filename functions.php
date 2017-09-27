@@ -1,5 +1,6 @@
 <?php
 require_once 'mysql_helper.php';
+require_once 'vendor/autoload.php';
 
 function renderTemplate($path, $arr) {
     if (!file_exists($path)) {

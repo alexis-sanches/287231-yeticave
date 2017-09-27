@@ -1,6 +1,7 @@
 <?php
 require_once 'functions.php';
 require_once 'init.php';
+require_once 'vendor/autoload.php';
 
 function validateEmail($value) {
     return filter_var($value, FILTER_VALIDATE_EMAIL);

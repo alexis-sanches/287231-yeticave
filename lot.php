@@ -3,6 +3,7 @@
 require_once 'functions.php';
 require_once 'mysql_helper.php';
 require_once 'init.php';
+require_once 'vendor/autoload.php';
 
 if (isset($_GET['lot'])) {
     $lot_query = '
