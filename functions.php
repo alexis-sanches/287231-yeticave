@@ -80,3 +80,24 @@ function randomQuery($connect, $query, $values = []) {
 
     return mysqli_stmt_execute($stmt);
 }
+
+function sendEmail($email, $name, $lot_id, $lot_name) {
+    $body = renderTemplate('templates/email.php', [
+        'username' => $name,
+        'email' => $email,
+        'id' => $lot_id,
+        'lot_name' => $lot_name
+    ]);
+
+    $transport = (new Swift_SmtpTransport('smtp.mail.ru', 465))
+        -> setUsername('doingsdone@mail.ru')
+        -> setPassword('rds7BgcL');
+
+    $message = (new Swift_Message('Ваша ставка победила'))
+        -> setTo([$email => $name])
+        -> setBody($body)
+        -> setFrom(['doingsdone@mail.ru' => 'YetiCave']);
+
+    $mailer = (new Swift_Mailer($transport));
+    $mailer -> send($message);
+}

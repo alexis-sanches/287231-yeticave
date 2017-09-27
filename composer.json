@@ -6,5 +6,7 @@
             "email": "a.sannikov@netrika.ru"
         }
     ],
-    "require": {}
+    "require": {
+        "swiftmailer/swiftmailer": "^6.0"
+    }
 }
