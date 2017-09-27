@@ -89,12 +89,13 @@ function sendEmail($email, $name, $lot_id, $lot_name) {
         'lot_name' => $lot_name
     ]);
 
-    $transport = (new Swift_SmtpTransport('smtp.mail.ru', 465))
+    $transport = (new Swift_SmtpTransport('smtp.mail.ru', 465, 'ssl'))
         -> setUsername('doingsdone@mail.ru')
         -> setPassword('rds7BgcL');
 
     $message = (new Swift_Message('Ваша ставка победила'))
         -> setTo([$email => $name])
+        -> setContentType('text/html')
         -> setBody($body)
         -> setFrom(['doingsdone@mail.ru' => 'YetiCave']);
 

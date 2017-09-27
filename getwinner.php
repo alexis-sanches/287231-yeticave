@@ -3,11 +3,11 @@ require_once 'functions.php';
 require_once 'init.php';
 require_once 'vendor/autoload.php';
 
-$lots_query = 'SELECT l.id AS lot_id, l.title AS title, COALESCE(MAX(cost), price) AS current_price, COUNT(cost) AS bet_cnt, name, email, b.user_id AS user_id
+$lots_query = 'SELECT l.id AS lot_id, l.title AS title, name, email
 FROM lots l
   LEFT JOIN bets b ON l.id = b.lot_id
   JOIN users u ON u.id = b.user_id
-WHERE winner_id IS NULL AND DATE(finished_at) >= DATE(NOW())
+WHERE winner_id IS NULL AND DATE(finished_at) <= NOW()
 GROUP BY l.id';
 
 $update_query = 'UPDATE lots SET winner_id = ? WHERE id = ?';
