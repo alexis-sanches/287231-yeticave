@@ -26,7 +26,7 @@
                 </div>
                 <div class="user-menu__logged">
                     <p>
-                        <?=htmlspecialchars($_SESSION['user']['name'])?>
+                        <?=strip_tags($_SESSION['user']['name'])?>
                     </p>
                     <p>
                         <a href="logout.php">Выйти</a>

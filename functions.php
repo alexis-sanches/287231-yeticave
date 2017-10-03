@@ -2,6 +2,15 @@
 require_once 'mysql_helper.php';
 require_once 'vendor/autoload.php';
 
+/**
+ * Отображает на странице содержимое шаблона
+ *
+ * @param $path string - Путь к php-файлу шаблона
+ * @param $arr array - Массив с данными для шаблона
+ *
+ * @return string - Содержимое шаблона со всеми вставленными значениями
+ */
+
 function renderTemplate($path, $arr) {
     if (!file_exists($path)) {
         return '';
@@ -15,6 +24,14 @@ function renderTemplate($path, $arr) {
 
     return $content;
 }
+
+/**
+ * Выводит время относительно текущей временной метки
+ *
+ * @param $ts number - Временная метка
+ *
+ * @return string - Дата в одном из трёх форматов
+ */
 
 function getRelativeDate($ts) {
     $current_time = strtotime('now');
@@ -31,15 +48,15 @@ function getRelativeDate($ts) {
     }
 }
 
-function lotTimeRemaining($date) {
-    date_default_timezone_set('Europe/Moscow');
-    $tomorrow = strtotime($date);
-    $now = strtotime('now');
-
-    $lot_time_remaining = date("H:i", $tomorrow - $now);
-
-    return $lot_time_remaining;
-}
+/**
+ * Выполняет запрос на получение значений из БД
+ *
+ * @param $connect mysqli - Ресурс соединения
+ * @param $query string - SQL-запрос
+ * @param $values array - Значения для подготовленного выражения
+ *
+ * @return array - Результат работы запроса
+ */
 
 function selectFromDatabase($connect, $query, $values = []) {
     $stmt = db_get_prepare_stmt($connect, $query, $values);
@@ -53,6 +70,16 @@ function selectFromDatabase($connect, $query, $values = []) {
         return [];
     }
 }
+
+/**
+ * Выполняет запрос на добавление значений в БД
+ *
+ * @param $connect mysqli - Ресурс соединения
+ * @param $table string - Название таблицы
+ * @param $values array - Значения для подготовленного выражения
+ *
+ * @return boolean | number - False, если запрос завершился с ошибкой, id последней записи в ином случае
+ */
 
 function insertIntoDatabase($connect, $table, $values) {
     $keys = array_keys($values);
@@ -75,11 +102,30 @@ function insertIntoDatabase($connect, $table, $values) {
     return mysqli_insert_id($connect);
 }
 
+/**
+ * Выполняет случайный запрос к БД через подготовленные выражения
+ *
+ * @param $connect mysqli - Ресурс соединения
+ * @param $query string - SQL-запрос
+ * @param $values array - Значения для подготовленного выражения
+ *
+ * @return boolean - результат выполнения подготовленного выражения
+ */
+
 function randomQuery($connect, $query, $values = []) {
     $stmt = db_get_prepare_stmt($connect, $query, $values);
 
     return mysqli_stmt_execute($stmt);
 }
+
+/**
+ * Отправляет email через библиотеку SwiftMailer
+ *
+ * @param $email string - Email получателя
+ * @param $name string - Имя получателя
+ * @param $lot_id int - Номер лота
+ * @param $lot_name string - Название лота
+ */
 
 function sendEmail($email, $name, $lot_id, $lot_name) {
     $body = renderTemplate('templates/email.php', [

@@ -5,7 +5,7 @@
     <h2>Регистрация нового аккаунта</h2>
     <div class="form__item<?=isset($errors['email']) ? ' form__item--invalid' : ''; ?>"> <!-- form__item--invalid -->
         <label for="email">E-mail*</label>
-        <input id="email" type="text" name="email" placeholder="Введите e-mail" value="<?=$_POST['email'] ?? '' ?>" required>
+        <input id="email" type="text" name="email" placeholder="Введите e-mail" value="<?=strip_tags($_POST['email']) ?? '' ?>" required>
         <span class="form__error"><?=isset($errors['email']) ? $errors['email'] : ''; ?></span>
     </div>
     <div class="form__item<?=isset($errors['password']) ? ' form__item--invalid' : ''; ?>">
@@ -15,12 +15,12 @@
     </div>
     <div class="form__item">
         <label for="name<?=isset($errors['name']) ? ' form__item--invalid' : ''; ?>">Имя*</label>
-        <input id="name" type="text" name="name" placeholder="Введите имя" value="<?=$_POST['name'] ?? '' ?>" required>
+        <input id="name" type="text" name="name" placeholder="Введите имя" value="<?=strip_tags($_POST['name']) ?? '' ?>" required>
         <span class="form__error"><?=isset($errors['name']) ? $errors['name'] : ''; ?></span>
     </div>
     <div class="form__item">
         <label for="message<?=isset($errors['message']) ? ' form__item--invalid' : ''; ?>">Контактные данные*</label>
-        <textarea id="message" name="message" placeholder="Напишите как с вами связаться" required><?=$_POST['message'] ?? '' ?></textarea>
+        <textarea id="message" name="message" placeholder="Напишите как с вами связаться" required><?=strip_tags($_POST['message']) ?? '' ?></textarea>
         <span class="form__error"><?=isset($errors['message']) ? $errors['message'] : ''; ?></span>
     </div>
     <div class="form__item form__item--file form__item--last">
