@@ -3,21 +3,39 @@ require_once 'functions.php';
 require_once 'init.php';
 require_once 'vendor/autoload.php';
 
-$lots_query = 'SELECT l.id AS lot_id, l.title AS title, name, email, u.id AS user_id
-FROM lots l
-  LEFT JOIN bets b ON l.id = b.lot_id
-  JOIN users u ON u.id = b.user_id
-WHERE winner_id IS NULL AND DATE(finished_at) <= NOW()
-GROUP BY l.id';
-
-$update_query = 'UPDATE lots SET winner_id = ? WHERE id = ?';
+$lots_query = 'SELECT id, title FROM lots WHERE winner_id IS NULL AND DATE(finished_at) <= NOW()';
 
 $lots_to_close = selectFromDatabase($con, $lots_query);
 
-foreach ($lots_to_close as $key => $value) {
-    $result = randomQuery($con, $update_query, [$value['user_id'], $value['lot_id']]);
+if (count($lots_to_close) > 0) {
+    $bets_query = 'SELECT b.user_id AS user_id, name, email, l.title AS lot_title, cost 
+    FROM bets b
+    JOIN users u ON u.id = b.user_id
+    JOIN lots l ON l.id = b.lot_id
+    WHERE lot_id = ?
+    ORDER BY cost DESC LIMIT 1';
 
-    if ($result) {
-        sendEmail($value['email'], $value['name'], $value['lot_id'], $value['title']);
+    $update_query = 'UPDATE lots SET winner_id = ? WHERE id = ?';
+
+    foreach ($lots_to_close as $key => $value) {
+        $bets = selectFromDatabase($con, $bets_query, [$value['id']]);
+
+        if (count($bets) > 0) {
+            $max_bet = $bets[0];
+
+            $result = randomQuery($con, $update_query, [$max_bet['user_id'], $value['id']]);
+
+            if ($result) {
+                sendEmail($max_bet['email'], $max_bet['name'], $value['id'], $max_bet['lot_title']);
+            }
+        }
     }
 }
+
+
+
+
+
+
+
+

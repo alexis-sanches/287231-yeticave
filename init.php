@@ -10,6 +10,7 @@ $password = '';
 $database = 'yeticave';
 
 $con = mysqli_connect($host, $username, $password, $database);
+mysqli_set_charset($con, 'utf-8');
 
 if ($con == false) {
     $error = mysqli_connect_error();

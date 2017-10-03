@@ -5,11 +5,13 @@ require_once 'mysql_helper.php';
 require_once 'init.php';
 require_once 'vendor/autoload.php';
 
+ini_set('display_errors', 'On');
+
 $lot = [];
 
 if (isset($_GET['lot'])) {
     $lot_query = '
-        SELECT l.id, l.title, description, image_url, c.title AS category, price, COALESCE(MAX(cost), price) AS curr_price, (COALESCE(MAX(cost), price) + bet_step) AS min_price, bet_step, finished_at   
+        SELECT l.id, l.title, description, image_url, author_id, c.title AS category, price, COALESCE(MAX(cost), price) AS curr_price, (COALESCE(MAX(cost), price) + bet_step) AS min_price, bet_step, finished_at   
         FROM lots l 
         JOIN categories c ON c.id = l.category_id 
         LEFT JOIN bets b ON l.id = b.lot_id

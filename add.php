@@ -4,6 +4,8 @@ require_once 'mysql_helper.php';
 require_once 'init.php';
 require_once 'vendor/autoload.php';
 
+ini_set('display_errors', 'On');
+
 $required = ['lot-name', 'category', 'message', 'lot-rate', 'lot-step', 'lot-date'];
 $rules = [
     'lot-rate' => 'validateNumber',
@@ -12,9 +14,25 @@ $rules = [
 ];
 $errors = [];
 
+/**
+ * Проверяет, что было передано число
+ *
+ * @param $value - пользовательский ввод
+ *
+ * @return boolean - результат проверки
+ */
+
 function validateNumber($value) {
     return filter_var($value, FILTER_VALIDATE_INT) && $value > 0;
 }
+
+/**
+ * Проверяет, что была передана дата не меньше, чем полночь завтрашнего дня
+ *
+ * @param $value - пользовательский ввод
+ *
+ * @return boolean - результат проверки
+ */
 
 function validateDate($value) {
     return strtotime($value) >= strtotime('tomorrow midnight');
