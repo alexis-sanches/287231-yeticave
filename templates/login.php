@@ -8,7 +8,7 @@
     <?php endif; ?>
     <div class="form__item<?=isset($errors['email']) ? ' form__item--invalid' : ''; ?>"> <!-- form__item--invalid -->
         <label for="email">E-mail*</label>
-        <input id="email" type="text" name="email" placeholder="Введите e-mail" value="<?=strip_tags($_POST['email']) ?? '' ?>" required>
+        <input id="email" type="text" name="email" placeholder="Введите e-mail" value="<?=strip_tags(isset($_POST['email']) ? $_POST['email'] : '') ?>" required>
         <span class="form__error"><?=isset($errors['email']) ? $errors['email'] : ''; ?></span>
     </div>
     <div class="form__item form__item--last<?=isset($errors['password']) ? ' form__item--invalid' : '' ?>">

@@ -2,6 +2,9 @@
 require_once 'functions.php';
 require_once 'vendor/autoload.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', 'On');
+
 session_start();
 
 $host = 'localhost';
@@ -10,7 +13,7 @@ $password = '';
 $database = 'yeticave';
 
 $con = mysqli_connect($host, $username, $password, $database);
-mysqli_set_charset($con, 'utf-8');
+mysqli_set_charset($con, 'utf8');
 
 if ($con == false) {
     $error = mysqli_connect_error();

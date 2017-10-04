@@ -6,7 +6,7 @@
     <ul class="promo__list">
         <?php foreach ($categories as $i => $it): ?>
         <li class="promo__item promo__item--<?=$it['id']; ?>">
-            <a class="promo__link" href="all-lots.php?cat=<?=$it['id']; ?>"><?=$it['title']; ?></a>
+            <a class="promo__link" href="all-lots.php?cat=<?=$it['id']; ?>"><?=strip_tags($it['title']); ?></a>
         </li>
         <?php endforeach; ?>
     </ul>
@@ -16,7 +16,7 @@
         <h2>Открытые лоты</h2>
         <select class="lots__select">
             <?php foreach ($categories as $i => $it): ?>
-                <option><?=$it['title']; ?></option>
+                <option><?=strip_tags($it['title']); ?></option>
             <?php endforeach; ?>
         </select>
     </div>
@@ -27,7 +27,7 @@
                     <img src="<?=$it['image_url']; ?>" width="350" height="260" alt="Сноуборд">
                 </div>
                 <div class="lot__info">
-                    <span class="lot__category"><?=$it['cat_title']; ?></span>
+                    <span class="lot__category"><?=strip_tags($it['cat_title']); ?></span>
                     <h3 class="lot__title"><a class="text-link" href="lot.php?lot=<?=$it['id'] ?>"><?=strip_tags($it['title']); ?></a></h3>
                     <div class="lot__state">
                         <div class="lot__rate">
@@ -35,7 +35,7 @@
                             <span class="lot__cost"><?=strip_tags($it['price']); ?><b class="rub">р</b></span>
                         </div>
                         <div class="lot__timer timer">
-                            <?=date('z. H:i', strtotime(strip_tags($it['finished_at'])) - strtotime('now')); ?>
+                            <?=date('z. H:i', strtotime($it['finished_at']) - strtotime('now')); ?>
                         </div>
                     </div>
                 </div>

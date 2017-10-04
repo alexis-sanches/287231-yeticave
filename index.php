@@ -5,8 +5,6 @@ require_once 'init.php';
 require_once 'vendor/autoload.php';
 require_once 'getwinner.php';
 
-ini_set('display_errors', 'On');
-
 $limit = 3;
 $curr_page = $_GET['page'] ?? 1;
 $total_items = selectFromDatabase($con, 'SELECT COUNT(*) AS cnt FROM lots WHERE winner_id IS NULL')[0]['cnt'];
